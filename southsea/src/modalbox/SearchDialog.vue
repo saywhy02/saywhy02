@@ -237,7 +237,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .el-form--inline .el-form-item {
   display: inline-block;
   margin-right: 10px;

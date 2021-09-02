@@ -5,7 +5,7 @@
       <el-header>
         <div class="nav">
           <div class="logo">
-            <a href="#">渔业资源管理系统</a>
+            <a href="javascript:void(0)">渔业资源管理系统</a>
           </div>
           <el-menu
             :default-active="$route.path"

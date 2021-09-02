@@ -123,7 +123,7 @@
                             <el-table-column
 								prop="varieties"
 								label="品种"
-								width="116">
+								width="90">
 							</el-table-column>
 							<el-table-column
 							align="center"
@@ -566,7 +566,7 @@ export default {
       renderHeader(h){
           return(
               <div>
-                <el-button type="primary" size="default" >导出Excel</el-button>
+                <el-button type="primary" size="small" >导出Excel</el-button>
               </div>
           )
       },
@@ -578,7 +578,5 @@ export default {
 </script>
 
 <style>
-.is-leaf .cell{
-  padding-left: 0px !important;
-}
+
 </style>
