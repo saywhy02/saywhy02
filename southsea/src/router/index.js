@@ -7,10 +7,11 @@ import DataResource from '@/view/DataResource/DataResource';
 import MyTask from '@/view/TaskPlann/MyTask.vue';
 import ProductionBase from '@/view/DataResource/ProductionBase';
 import ProductionInformationBase from '@/view/DataResource/ProductionInformationBase';
+import Login from '../components/Login.vue';
+import Register from '../components/Register.vue';
 Vue.use(Router);
 
 export default new Router({
-    mode: 'history',
     routes: [
         {
             path: '/',
@@ -60,6 +61,18 @@ export default new Router({
                 },
             ],
         },
-        { path: '*', redirect: { name: 'Map' } },
+        { path: '*', redirect: { name: 'Login' } },
+        {
+            path: '/Login',
+            name: Login,
+            component: Login,
+            meta: { title: '渔业资源管理系统-登录' },
+        },
+        {
+            path: '/Register',
+            name: Register,
+            component: Register,
+            meta: { title: '渔业资源管理系统-登录' },
+        },
     ],
 });

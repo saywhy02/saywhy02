@@ -1,6 +1,10 @@
 <template>
     <div class="box">
-        <h1>南海城市大脑<small>渔业资源管理系统</small></h1>
+        <h1 style=" font-size: 28px; padding-top: 120px; text-align: center;">
+            南海城市大脑<small style=" text-align: center;"
+                >渔业资源管理系统</small
+            >
+        </h1>
         <el-tabs
             class="topbox"
             v-model="activeName"
@@ -8,29 +12,27 @@
         >
             <!-- 账号密码登录 -->
             <el-tab-pane label="账号密码登录" name="first">
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item
-                        prop="name"
-                        :rules="[
-                            { required: true, message: '登录账号不能为空' },
-                        ]"
-                    >
+                <el-form
+                    ref="form"
+                    :model="form"
+                    label-width="80px"
+                    :rules="rules"
+                >
+                    <el-form-item prop="username">
                         <el-input
-                            v-model="form.name"
+                            v-model="form.username"
                             maxlength="11"
                             show-word-limit
                             prefix-icon="el-icon-user"
                             placeholder=" 请输入账号或手机号码"
                         ></el-input>
                     </el-form-item>
-                    <el-form-item
-                        prop="pass"
-                        :rules="[{ required: true, message: '密码不能为空' }]"
-                    >
+                    <el-form-item prop="password">
                         <el-input
                             v-model="form.password"
                             prefix-icon="el-icon-goods"
                             placeholder="请输入密码"
+                            type="password"
                         ></el-input>
                     </el-form-item>
                     <el-form-item>
@@ -96,7 +98,7 @@
             <el-link type="primary" style="float: left" @click="forgetPass"
                 >忘记密码</el-link
             >
-            <el-link type="primary" style="float: right" @click="sub()"
+            <el-link type="primary" style="float: right" @click="sub"
                 >信息员注册</el-link
             >
 
@@ -157,10 +159,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="warning" @click="handleClose()"
-                    >关 闭</el-button
-                >
-                <el-button type="primary" @click="sure()">修 改</el-button>
+                <el-button type="warning" @click="handleClose">关 闭</el-button>
+                <el-button type="primary" @click="sure">修 改</el-button>
             </div>
         </el-dialog>
     </div>
@@ -205,7 +205,7 @@ export default {
                 smscode: '',
             },
             form: {
-                name: '',
+                username: '',
                 password: '',
                 phone: '',
                 code: '',
@@ -259,8 +259,9 @@ export default {
         //登录
         onSubmit(val) {
             if (val == 1) {
-                if (this.form.name == '') {
-                }
+                this.$router.push({
+                    path: '/Map',
+                });
             } else {
                 console.log(222);
             }
@@ -307,7 +308,7 @@ export default {
         //注册
         sub() {
             this.$router.push({
-                path: '/register',
+                path: '/Register',
             });
         },
     },
@@ -318,12 +319,9 @@ export default {
 h1,
 small,
 h5 {
-    font-weight: 500;
-    text-align: center;
+    font-weight: 400;
 }
 h1 {
-    font-size: 28px;
-    padding-top: 120px;
     margin-bottom: 30px;
     box-sizing: border-box;
 }
