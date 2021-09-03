@@ -5,10 +5,10 @@
             <el-header>
                 <div class="nav">
                     <div class="logo">
-                        <a href="#">渔业资源管理系统</a>
+                        <a href="javascript:void(0)">渔业资源管理系统</a>
                     </div>
                     <el-menu
-                        :default-active="this.$route.path"
+                        :default-active="$route.path"
                         class="el-menu-demo"
                         mode="horizontal"
                         @select="handleSelect"
@@ -18,12 +18,13 @@
                         router
                     >
                         <el-menu-item index="/Map">GIS控制台</el-menu-item>
-                        <el-menu-item index="/">计划任务管理</el-menu-item>
+                        <el-menu-item index="/TaskPlann/MyTask/MyTaskList"
+                            >计划任务管理</el-menu-item
+                        >
                         <el-menu-item index="/DataResource/ProductionBase"
                             >生产主体库</el-menu-item
                         >
-                        <el-menu-item
-                            index="/DataResource/ProductionInformationBase"
+                        <el-menu-item index="/BasicInfo/DivisionManagement"
                             >基础信息管理</el-menu-item
                         >
                     </el-menu>
@@ -61,48 +62,8 @@
                     </div>
                 </div>
             </el-header>
+            <router-view></router-view>
             <!-- 主体内容 -->
-            <el-container>
-                <!-- 主体内容--侧边栏 -->
-                <el-aside :span="6">
-                    <el-tabs
-                        v-model="activeName"
-                        @tab-click="handleClick"
-                        :stretch="true"
-                    >
-                        <el-tab-pane label="采集中" name="first">
-                            <el-col :span="22" :offset="1">
-                                <el-card shadow="always">
-                                    <i
-                                        class="el-icon-s-opportunity"
-                                        style="color: green"
-                                    ></i
-                                    >您当前没有任何的任务
-                                </el-card>
-                            </el-col>
-                        </el-tab-pane>
-                        <el-tab-pane label="已到期" name="second">
-                            <el-col :span="22" :offset="1">
-                                <el-card shadow="always">
-                                    <i
-                                        class="el-icon-s-opportunity"
-                                        style="color: green"
-                                    ></i
-                                    >您当前没有到期任务
-                                </el-card>
-                            </el-col>
-                        </el-tab-pane>
-                        <el-tab-pane label="数据查看" name="third">
-                            <!-- 统计图容器 -->
-                            <div
-                                ref="myChart"
-                                style="width: 300px; height: 270px"
-                            ></div>
-                        </el-tab-pane>
-                    </el-tabs>
-                </el-aside>
-                <router-view></router-view>
-            </el-container>
         </el-container>
     </div>
 </template>
@@ -111,16 +72,8 @@
 export default {
     name: 'Map',
     data() {
-        return {
-            activeName: 'first',
-            isShow: true,
-            value: '',
-        };
+        return {};
     },
-    mounted() {
-        this.drawLine();
-    },
-
     methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
@@ -128,41 +81,14 @@ export default {
         handleClick(tab, event) {
             console.log(tab, event);
         },
-        // 鱼塘数量
-        drawLine() {
-            var myChart = this.$echarts.init(this.$refs.myChart);
-            console.log(this.$refs.myChart);
-            myChart.setOption({
-                title: {
-                    text: '鱼塘总数量：441',
-                    subtext: '各二级地级数量',
-                    left: 'left',
-                },
-                tooltip: {
-                    trigger: 'item',
-                },
-                series: [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: '50%',
-                        data: [{ value: 411, name: '鱼塘' }],
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: '#5470c6',
-                            },
-                        },
-                    },
-                ],
-            });
+        onSubmit() {
+            console.log('submit!');
         },
     },
 };
 </script>
 
-<style>
+<style scoped>
 .el-header {
     padding: 0;
 }
@@ -200,16 +126,5 @@ export default {
 }
 .el-dropdown-menu__item {
     width: 150px;
-}
-.el-aside {
-    border-right: 1px solid #ccc;
-    height: calc(100vh - 60px);
-    overflow: scroll;
-}
-/* .el-tabs__content {
-    height: 80vh;
-} */
-.el-aside::-webkit-scrollbar {
-    display: none;
 }
 </style>

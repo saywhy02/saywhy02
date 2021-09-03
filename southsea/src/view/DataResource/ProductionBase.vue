@@ -1,6 +1,6 @@
 <template>
-    <div style="padding:20px;overflow:hidden;height: 90vh;">
-        <el-row :gutter="20">
+    <div style="margin:20px 20px 0 20px">
+        <el-row :gutter="20" style="margin-bottom:20px">
             <el-col :span="24" :offset="0">
                 <el-card shadow="always" :body-style="{ padding: '20px' }">
                     <!-- card body -->
@@ -112,6 +112,7 @@
                                     <el-checkbox
                                         label="渔业"
                                         name="type"
+                                        checked="checked"
                                     ></el-checkbox>
                                 </el-checkbox-group>
                             </el-form-item>
@@ -126,31 +127,55 @@
                 </el-card>
             </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin-top: 20px">
+        <el-row :gutter="20">
             <el-col :span="24" :offset="0">
                 <el-card shadow="always" :body-style="{ padding: '20px' }">
                     <!-- card body -->
                     <div>
-                        <el-table :data="tableData">
-                            <el-table-column prop="name" label="主体名称">
+                        <el-table :data="tableData" style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                label="主体名称"
+                                width="130"
+                            >
                             </el-table-column>
-                            <el-table-column prop="linkman" label="联系人">
+                            <el-table-column
+                                prop="linkman"
+                                label="联系人"
+                                width="130"
+                            >
                             </el-table-column>
-                            <el-table-column prop="number" label="电话">
+                            <el-table-column
+                                prop="number"
+                                label="电话"
+                                width="130"
+                            >
                             </el-table-column>
-                            <el-table-column prop="type" label="主体类别">
+                            <el-table-column
+                                prop="type"
+                                label="主体类别"
+                                width="130"
+                            >
                             </el-table-column>
                             <el-table-column
                                 prop="code"
                                 label="主题组织机构代码"
+                                width="130"
                             >
                             </el-table-column>
-                            <el-table-column prop="base" label="基地">
-                            </el-table-column>
-                            <el-table-column prop="address" label="主体地址">
+                            <el-table-column
+                                prop="base"
+                                label="基地"
+                                width="130"
+                            >
                             </el-table-column>
                             <el-table-column
-                                width="250px"
+                                prop="address"
+                                label="主体地址"
+                                width="130"
+                            >
+                            </el-table-column>
+                            <el-table-column
                                 align="left"
                                 :render-header="renderHeader"
                             >
@@ -173,10 +198,7 @@
                             </el-table-column>
                         </el-table>
                     </div>
-                    <div
-                        class="block"
-                        style="text-align: right; margin-top: 20px"
-                    >
+                    <div class="block" style="text-align:right;margin-top:20px">
                         <el-pagination
                             background
                             :page-sizes="[5, 10, 20, 30, 40]"
@@ -189,11 +211,14 @@
                 </el-card>
             </el-col>
         </el-row>
+        <NewlyAdded ref="newadd"></NewlyAdded>
     </div>
 </template>
 
 <script>
+import NewlyAdded from '../../modalbox/NewlyAdded.vue';
 export default {
+    name: 'ProductionBase',
     data() {
         return {
             tableData: [
@@ -493,8 +518,8 @@ export default {
             typeOptions: [],
         };
     },
+    components: { NewlyAdded },
     methods: {
-        onSubmit() {},
         changeSelect() {
             for (const k in this.townOptions) {
                 if (this.form.town === this.townOptions[k]) {
@@ -502,16 +527,16 @@ export default {
                 }
             }
         },
-        renderHeader() {
+        renderHeader(h) {
             return (
                 <div>
-                    <el-button type="primary" size="default">
+                    <el-button type="primary" size="mini" onClick={this.newAdd}>
                         新增
                     </el-button>
-                    <el-button type="warning" size="default">
+                    <el-button type="warning" size="mini">
                         导出
                     </el-button>
-                    <el-button type="danger" size="default">
+                    <el-button type="danger" size="mini">
                         导入
                     </el-button>
                 </div>
@@ -519,6 +544,10 @@ export default {
         },
         handleCheck(index, row) {
             console.log(index, row);
+        },
+        onSubmit() {},
+        newAdd() {
+            this.$refs.newadd.dialogFormVisible = true;
         },
     },
 };
