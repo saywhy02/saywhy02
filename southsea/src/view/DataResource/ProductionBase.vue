@@ -133,49 +133,25 @@
                     <!-- card body -->
                     <div>
                         <el-table :data="tableData" style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="主体名称"
-                                width="130"
-                            >
+                            <el-table-column prop="name" label="主体名称">
                             </el-table-column>
-                            <el-table-column
-                                prop="linkman"
-                                label="联系人"
-                                width="130"
-                            >
+                            <el-table-column prop="linkman" label="联系人">
                             </el-table-column>
-                            <el-table-column
-                                prop="number"
-                                label="电话"
-                                width="130"
-                            >
+                            <el-table-column prop="number" label="电话">
                             </el-table-column>
-                            <el-table-column
-                                prop="type"
-                                label="主体类别"
-                                width="130"
-                            >
+                            <el-table-column prop="type" label="主体类别">
                             </el-table-column>
                             <el-table-column
                                 prop="code"
                                 label="主题组织机构代码"
-                                width="130"
                             >
                             </el-table-column>
-                            <el-table-column
-                                prop="base"
-                                label="基地"
-                                width="130"
-                            >
+                            <el-table-column prop="base" label="基地">
+                            </el-table-column>
+                            <el-table-column prop="address" label="主体地址">
                             </el-table-column>
                             <el-table-column
-                                prop="address"
-                                label="主体地址"
-                                width="130"
-                            >
-                            </el-table-column>
-                            <el-table-column
+                                width="250px"
                                 align="left"
                                 :render-header="renderHeader"
                             >
@@ -527,7 +503,7 @@ export default {
                 }
             }
         },
-        renderHeader(h) {
+        renderHeader() {
             return (
                 <div>
                     <el-button type="primary" size="mini" onClick={this.newAdd}>
