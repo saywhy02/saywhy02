@@ -24,7 +24,7 @@
                             maxlength="11"
                             show-word-limit
                             prefix-icon="el-icon-user"
-                            placeholder=" 请输入账号或手机号码"
+                            placeholder="请输入账号或手机号码"
                         ></el-input>
                     </el-form-item>
                     <el-form-item prop="password">

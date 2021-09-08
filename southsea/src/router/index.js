@@ -64,13 +64,13 @@ export default new Router({
         { path: '*', redirect: { name: 'Login' } },
         {
             path: '/Login',
-            name: Login,
+            name: 'Login',
             component: Login,
             meta: { title: '渔业资源管理系统-登录' },
         },
         {
             path: '/Register',
-            name: Register,
+            name: 'Register',
             component: Register,
             meta: { title: '渔业资源管理系统-登录' },
         },

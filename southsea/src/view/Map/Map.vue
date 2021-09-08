@@ -36,10 +36,7 @@
                     </el-tab-pane>
                     <el-tab-pane label="数据查看" name="third">
                         <!-- 统计图容器 -->
-                        <div
-                            ref="myChart"
-                            style="width: 300px; height: 270px"
-                        ></div>
+                        <div id="main" ref="myChart"></div>
                     </el-tab-pane>
                 </el-tabs>
             </el-aside>
@@ -420,6 +417,16 @@ export default {
         };
     },
     mounted() {
+        Object.defineProperty(document.getElementById('main'), 'clientWidth', {
+            get: function() {
+                return 300;
+            },
+        });
+        Object.defineProperty(document.getElementById('main'), 'clientHeight', {
+            get: function() {
+                return 300;
+            },
+        });
         this.drawLine();
     },
     methods: {

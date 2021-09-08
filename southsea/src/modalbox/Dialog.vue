@@ -418,7 +418,7 @@ export default {
                 data2: '',
             },
             formLabelWidth: '120px',
-            imageUrl: '../assets/zwphoto.jpg',
+            imageUrl: '../../static/img/404.jpg',
             shVisible: false,
             radio: '1',
         };

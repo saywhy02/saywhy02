@@ -50,7 +50,9 @@
                                     <el-dropdown-item divided
                                         >切换到种植系统</el-dropdown-item
                                     >
-                                    <el-dropdown-item divided
+                                    <el-dropdown-item
+                                        @click.native="quit"
+                                        divided
                                         >退出</el-dropdown-item
                                     >
                                     <el-dropdown-item divided
@@ -83,6 +85,11 @@ export default {
         },
         onSubmit() {
             console.log('submit!');
+        },
+        quit() {
+            this.$router.push({
+                path: '/login',
+            });
         },
     },
 };

@@ -39,7 +39,6 @@
                                     <el-option
                                         v-for="(item, index) in townOptions"
                                         :key="index"
-                                        :label="item"
                                         :value="item"
                                     ></el-option>
                                 </el-select>
@@ -52,7 +51,6 @@
                                     <el-option
                                         v-for="(item, index) in townObj"
                                         :key="index"
-                                        :label="item"
                                         :value="item"
                                     ></el-option>
                                 </el-select>

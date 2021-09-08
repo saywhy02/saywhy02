@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row :gutter="20">
+        <el-row>
             <el-col :span="8" :offset="8">
                 <h1 class="title">信息员注册</h1>
             </el-col>
@@ -19,9 +19,9 @@
 
                     <el-form
                         :rules="rules"
-                        ref="form"
+                        ref="forms"
                         :model="form"
-                        label-width="80px"
+                        label-width="100px"
                         class="demo-ruleForm"
                     >
                         <el-form-item label="真实姓名" prop="name">
@@ -41,8 +41,8 @@
                         <el-form-item label="初始密码" prop="pass">
                             <el-input v-model="form.pass"></el-input>
                         </el-form-item>
-                        <el-form-item label="确认密码" prop="passtwo">
-                            <el-input v-model="form.passtwo"></el-input>
+                        <el-form-item label="确认密码" prop="passRes">
+                            <el-input v-model="form.passRes"></el-input>
                         </el-form-item>
                         <el-form-item label="手机号码" prop="phone">
                             <el-input
@@ -60,38 +60,44 @@
                                 >获取验证码</el-button
                             >
                         </el-form-item>
-                        <el-form-item label="选择镇街" class="left">
-                            <el-select v-model="form.town" placeholder="请选择">
-                                <el-option
-                                    label="区域一"
-                                    value="shanghai"
-                                ></el-option>
-                                <el-option
-                                    label="区域二"
-                                    value="beijing"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="选择村居" class="left">
-                            <el-select
-                                v-model="form.village"
-                                placeholder="请选择"
-                            >
-                                <el-option
-                                    label="区域一"
-                                    value="shanghai"
-                                ></el-option>
-                                <el-option
-                                    label="区域二"
-                                    value="beijing"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item
-                            label="申请理由"
-                            class="liyou"
-                            prop="desc"
-                        >
+                        <el-row>
+                            <el-col :span="11" :offset="1">
+                                <el-form-item label="选择镇街">
+                                    <el-select
+                                        v-model="form.town"
+                                        clearable
+                                        placeholder="请选择"
+                                    >
+                                        <el-option
+                                            label="区域一"
+                                            value="shanghai"
+                                        ></el-option>
+                                        <el-option
+                                            label="区域二"
+                                            value="beijing"
+                                        ></el-option>
+                                    </el-select> </el-form-item
+                            ></el-col>
+                            <el-col :span="11" :offset="1">
+                                <el-form-item label="选择村居">
+                                    <el-select
+                                        v-model="form.village"
+                                        clearable
+                                        placeholder="请选择"
+                                    >
+                                        <el-option
+                                            label="区域一"
+                                            value="shanghai"
+                                        ></el-option>
+                                        <el-option
+                                            label="区域二"
+                                            value="beijing"
+                                        ></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-form-item label="申请理由" prop="desc">
                             <el-input
                                 type="textarea"
                                 v-model="form.desc"
@@ -103,7 +109,7 @@
                             <el-button type="primary" @click="onSubmit"
                                 >立即创建</el-button
                             >
-                            <el-button>取消</el-button>
+                            <el-button>重置</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -113,6 +119,7 @@
 </template>
 
 <script>
+import { register } from '@/api/reg';
 export default {
     name: 'Register',
 
@@ -122,7 +129,7 @@ export default {
                 name: '',
                 number: '',
                 pass: '',
-                passtwo: '',
+                passRes: '',
                 phone: '',
                 yannum: '',
                 town: '',
@@ -152,19 +159,19 @@ export default {
                         trigger: 'blur',
                     },
                     {
-                        min: 3,
-                        max: 5,
-                        message: '长度在 3 到 5 个字符',
+                        min: 18,
+                        max: 18,
+                        message: '请如实填写18位身份证号码',
                         trigger: 'blur',
                     },
                 ],
                 pass: [
                     { required: true, message: '请输入密码', trigger: 'blur' },
                 ],
-                passtwo: [
+                passRes: [
                     {
                         required: true,
-                        message: '两次输入密码不一致',
+                        message: '两次输入密码不一致！',
                         trigger: 'blur',
                     },
                 ],
@@ -203,13 +210,26 @@ export default {
 
     methods: {
         onSubmit() {
-            console.log('submit!');
+            this.$refs.forms.validate((valid) => {
+                // if (valid) {
+                //     this.onLogin();
+                // } else {
+                //     this.$message.error('请填写正确的手机号及注册信息！');
+                //     return false;
+                // }
+                this.onLogin();
+            });
         },
         back() {
             this.$router.push({
                 path: '/Login',
             });
         },
+        async onLogin() {
+            const { data } = await register(this.form);
+            console.log(data.msg);
+        },
+        async onCode() {},
     },
 };
 </script>
@@ -244,30 +264,16 @@ h3 {
     padding: 12px 0;
     margin-left: 10px;
 }
-.el-form-item__label {
-    width: 100px !important;
-}
 .el-input {
-    width: 90%;
+    width: 100%;
 }
 .yan .el-input {
     width: 60%;
-}
-.left {
-    float: left;
-    width: 50%;
 }
 .left .el-form-item__content {
     margin-left: 0 !important;
 }
 .left .el-select {
     width: 60%;
-}
-.liyou .el-form-item__content {
-    width: 80%;
-    float: left;
-}
-.liyou .el-form-item__content {
-    margin-left: 0 !important;
 }
 </style>
