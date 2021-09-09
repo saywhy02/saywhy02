@@ -133,22 +133,34 @@
                     <!-- card body -->
                     <div>
                         <el-table :data="tableData" style="width: 100%">
-                            <el-table-column prop="name" label="主体名称">
-                            </el-table-column>
-                            <el-table-column prop="linkman" label="联系人">
-                            </el-table-column>
-                            <el-table-column prop="number" label="电话">
-                            </el-table-column>
-                            <el-table-column prop="type" label="主体类别">
+                            <el-table-column
+                                prop="subjectName"
+                                label="主体名称"
+                            >
                             </el-table-column>
                             <el-table-column
-                                prop="code"
+                                prop="subjectLinkman"
+                                label="联系人"
+                            >
+                            </el-table-column>
+                            <el-table-column prop="subjectTele" label="电话">
+                            </el-table-column>
+                            <el-table-column
+                                prop="subjectTypeName"
+                                label="主体类别"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                prop="subjectOrgCode"
                                 label="主题组织机构代码"
                             >
                             </el-table-column>
-                            <el-table-column prop="base" label="基地">
+                            <el-table-column prop="subjectBase" label="基地">
                             </el-table-column>
-                            <el-table-column prop="address" label="主体地址">
+                            <el-table-column
+                                prop="subjectAddr"
+                                label="主体地址"
+                            >
                             </el-table-column>
                             <el-table-column
                                 width="250px"
@@ -177,10 +189,13 @@
                     <div class="block" style="text-align:right;margin-top:20px">
                         <el-pagination
                             background
-                            :page-sizes="[5, 10, 20, 30, 40]"
-                            :page-size="100"
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :page-sizes="[5, 10, 20, 30, 40, 200]"
+                            :current-page="pageNum"
+                            :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
-                            :total="400"
+                            :total="total"
                         >
                         </el-pagination>
                     </div>
@@ -193,156 +208,15 @@
 
 <script>
 import NewlyAdded from '../../modalbox/NewlyAdded.vue';
+import { productionBase } from '@/api/reg';
 export default {
     name: 'ProductionBase',
     data() {
         return {
-            tableData: [
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-            ],
+            total: 0,
+            pageNum: 1,
+            pageSize: 10,
+            tableData: [],
             form: {
                 name: '',
                 type: '',
@@ -494,8 +368,27 @@ export default {
             typeOptions: [],
         };
     },
+    created() {
+        this.tableD();
+    },
     components: { NewlyAdded },
     methods: {
+        handleSizeChange(val) {
+            this.pageSize = val;
+            // console.log(`每页 ${val} 条`);
+            this.tableD(this.pageNum, val);
+        },
+        handleCurrentChange(val) {
+            this.pageNum = val;
+            // console.log(`当前页: ${val}`);
+            this.tableD(val, this.pageSize);
+        },
+        async tableD(aa = 1, bb = 10) {
+            const { data } = await productionBase(aa, bb);
+            // console.log(data.data.list[0].subjectName);
+            this.tableData = data.data.list.concat();
+            this.total = data.data.total;
+        },
         changeSelect() {
             for (const k in this.townOptions) {
                 if (this.form.town === this.townOptions[k]) {

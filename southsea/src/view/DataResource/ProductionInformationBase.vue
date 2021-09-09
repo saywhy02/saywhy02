@@ -110,59 +110,35 @@
                     <!-- card body -->
                     <div>
                         <el-table :data="tableData" style="width: 116">
-                            <el-table-column
-                                prop="id"
-                                label="图斑ID"
-                                width="116"
-                            >
+                            <el-table-column prop="landCode" label="图斑ID">
+                            </el-table-column>
+                            <el-table-column prop="landName" label="地塘块命名">
+                            </el-table-column>
+                            <el-table-column prop="landTownName" label="镇街">
                             </el-table-column>
                             <el-table-column
-                                prop="linkman"
-                                label="地塘块命名"
-                                width="116"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                prop="town"
-                                label="镇街"
-                                width="116"
-                            >
-                            </el-table-column>
-                            <el-table-column
-                                prop="village"
+                                prop="landVillageName"
                                 label="村居"
-                                width="116"
                             >
                             </el-table-column>
-                            <el-table-column
-                                prop="area"
-                                label="面积(亩)"
-                                width="116"
-                            >
+                            <el-table-column prop="mu" label="面积(亩)">
                             </el-table-column>
                             <el-table-column
-                                prop="type"
+                                prop="landTypeName"
                                 label="地块类型"
-                                width="116"
                             >
                             </el-table-column>
                             <el-table-column
-                                prop="subject"
+                                prop="subjectNames"
                                 label="所属主体"
-                                width="116"
                             >
                             </el-table-column>
                             <el-table-column
-                                prop="classify"
+                                prop="landProductName"
                                 label="农场品分类"
-                                width="116"
                             >
                             </el-table-column>
-                            <el-table-column
-                                prop="varieties"
-                                label="品种"
-                                width="90"
-                            >
+                            <el-table-column prop="landOtherType" label="品种">
                             </el-table-column>
                             <el-table-column
                                 align="center"
@@ -184,10 +160,13 @@
                     <div class="block" style="text-align:right;margin-top:20px">
                         <el-pagination
                             background
-                            :page-sizes="[100, 200, 300, 400]"
-                            :page-size="100"
-                            layout="sizes, prev, pager, next, jumper"
-                            :total="1000"
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :page-sizes="[5, 10, 20, 30, 40, 200]"
+                            :current-page="pageNum"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total"
                         >
                         </el-pagination>
                     </div>
@@ -198,6 +177,7 @@
 </template>
 
 <script>
+import { productionInformation } from '@/api/reg';
 export default {
     name: 'ProductionInformationBase',
     data() {
@@ -599,57 +579,14 @@ export default {
                     ],
                 },
             ],
-            tableData: [
-                {
-                    id: '2016-05-02',
-                    linkman: '王小虎',
-                    town: '上海市普陀区金沙江路 1518 弄',
-                    village: '123',
-                    area: '123',
-                    type: '123',
-                    village: '4560',
-                    classify: '789',
-                    varieties: '456',
-                    subject: '123',
-                },
-                {
-                    id: '2016-05-02',
-                    linkman: '王小虎',
-                    town: '上海市普陀区金沙江路 1518 弄',
-                    village: '123',
-                    area: '123',
-                    type: '123',
-                    village: '4560',
-                    classify: '789',
-                    varieties: '456',
-                    subject: '123',
-                },
-                {
-                    id: '2016-05-02',
-                    linkman: '王小虎',
-                    town: '上海市普陀区金沙江路 1518 弄',
-                    village: '123',
-                    area: '123',
-                    type: '123',
-                    village: '4560',
-                    classify: '789',
-                    varieties: '456',
-                    subject: '123',
-                },
-                {
-                    id: '2016-05-02',
-                    linkman: '王小虎',
-                    town: '上海市普陀区金沙江路 1518 弄',
-                    village: '123',
-                    area: '123',
-                    type: '123',
-                    village: '4560',
-                    classify: '789',
-                    varieties: '456',
-                    subject: '123',
-                },
-            ],
+            tableData: [],
+            total: 0,
+            pageNum: 1,
+            pageSize: 10,
         };
+    },
+    created() {
+        this.tableD();
     },
     methods: {
         changeSelect() {
@@ -660,10 +597,20 @@ export default {
             }
         },
         handleSizeChange(val) {
+            this.pageSize = val;
             console.log(`每页 ${val} 条`);
+            this.tableD(this.pageNum, val);
         },
         handleCurrentChange(val) {
+            this.pageNum = val;
             console.log(`当前页: ${val}`);
+            this.tableD(val, this.pageSize);
+        },
+        async tableD(aa = 1, bb = 10) {
+            const { data } = await productionInformation(aa, bb);
+            console.log(data.data.list[7]);
+            this.tableData = data.data.list.concat();
+            this.total = data.data.total;
         },
         handleClick(row) {
             console.log(row.ID);

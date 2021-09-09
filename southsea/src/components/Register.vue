@@ -24,39 +24,47 @@
                         label-width="100px"
                         class="demo-ruleForm"
                     >
-                        <el-form-item label="真实姓名" prop="name">
+                        <el-form-item label="真实姓名" prop="realName">
                             <el-input
-                                v-model="form.name"
+                                v-model="form.realName"
                                 maxlength="30"
                                 show-word-limit
                             ></el-input>
                         </el-form-item>
-                        <el-form-item label="身份证号码" prop="number">
+                        <el-form-item label="身份证号码" prop="registerCard">
                             <el-input
-                                v-model="form.number"
+                                v-model="form.registerCard"
                                 maxlength="18"
                                 show-word-limit
                             ></el-input>
                         </el-form-item>
-                        <el-form-item label="初始密码" prop="pass">
-                            <el-input v-model="form.pass"></el-input>
+                        <el-form-item
+                            type="password"
+                            label="初始密码"
+                            prop="password"
+                        >
+                            <el-input v-model="form.password"></el-input>
                         </el-form-item>
                         <el-form-item label="确认密码" prop="passRes">
-                            <el-input v-model="form.passRes"></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号码" prop="phone">
                             <el-input
-                                v-model="form.phone"
+                                type="password"
+                                v-model="form.passRes"
+                            ></el-input>
+                        </el-form-item>
+                        <el-form-item label="手机号码" prop="mobile">
+                            <el-input
+                                v-model="form.mobile"
                                 maxlength="11"
                                 show-word-limit
                             ></el-input>
                         </el-form-item>
-                        <el-form-item label="验证码" class="yan" prop="yannum">
-                            <el-input v-model="form.yannum"></el-input>
+                        <el-form-item label="验证码" class="yan" prop="msgNum">
+                            <el-input v-model="form.msgNum"></el-input>
                             <el-button
                                 :disabled="isDisabled"
                                 class="yanz"
                                 type="primary"
+                                @click="getMsg"
                                 >获取验证码</el-button
                             >
                         </el-form-item>
@@ -97,10 +105,10 @@
                                 </el-form-item>
                             </el-col>
                         </el-row>
-                        <el-form-item label="申请理由" prop="desc">
+                        <el-form-item label="申请理由" prop="registerMemo">
                             <el-input
                                 type="textarea"
-                                v-model="form.desc"
+                                v-model="form.registerMemo"
                                 maxlength="500"
                                 show-word-limit
                             ></el-input>
@@ -109,7 +117,7 @@
                             <el-button type="primary" @click="onSubmit"
                                 >立即创建</el-button
                             >
-                            <el-button>重置</el-button>
+                            <el-button @click="reset">重置</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -119,27 +127,51 @@
 </template>
 
 <script>
-import { register } from '@/api/reg';
+import { register, VerificationCode } from '@/api/reg';
 export default {
     name: 'Register',
 
     data() {
+        // 手机号码判断
+        let valid = (rule, value, callback) => {
+            let reg = /^1[3,5,7,8]\d{9}$/;
+            if (value === '') {
+                callback(new Error('手机号不能为空，请输入正确！'));
+            } else if (!reg.test(value)) {
+                callback(new Error('请输入正确的手机号'));
+            } else {
+                callback();
+            }
+        };
+        // 两次密码输入判断
+        let passAll = (rule, value, callback) => {
+            let pass = this.form.password;
+            // console.log(pass);
+            if (value != pass) {
+                callback(new Error('两次密码输入不一致！'));
+            } else {
+                callback();
+            }
+        };
         return {
             form: {
-                name: '',
-                number: '',
-                pass: '',
+                realName: '',
+                registerCard: '',
+                password: '',
                 passRes: '',
-                phone: '',
-                yannum: '',
+                mobile: '',
+                msgNum: '',
                 town: '',
                 village: '',
-                desc: '',
-                delivery: false,
+                registerMemo: '说明',
+                tamp: '',
+                userAdministrativeCode: 440605125,
+                type: 0,
             },
+
             isDisabled: false,
             rules: {
-                name: [
+                realName: [
                     {
                         required: true,
                         message: '请输入您的真实姓名',
@@ -152,7 +184,7 @@ export default {
                         trigger: 'blur',
                     },
                 ],
-                number: [
+                registerCard: [
                     {
                         required: true,
                         message: '请输入身份证号',
@@ -165,20 +197,18 @@ export default {
                         trigger: 'blur',
                     },
                 ],
-                pass: [
-                    { required: true, message: '请输入密码', trigger: 'blur' },
-                ],
+                password: [{ required: true, trigger: 'blur' }],
                 passRes: [
                     {
                         required: true,
-                        message: '两次输入密码不一致！',
+                        validator: passAll,
                         trigger: 'blur',
                     },
                 ],
-                phone: [
+                mobile: [
                     {
                         required: true,
-                        message: '请输入手机号码',
+                        validator: valid,
                         trigger: 'blur',
                     },
                     {
@@ -188,14 +218,14 @@ export default {
                         trigger: 'blur',
                     },
                 ],
-                yannum: [
+                msgNum: [
                     {
                         required: true,
                         message: '手机验证码不能为空',
                         trigger: 'blur',
                     },
                 ],
-                desc: [
+                registerMemo: [
                     {
                         required: true,
                         message: '请填写申请说明',
@@ -211,13 +241,12 @@ export default {
     methods: {
         onSubmit() {
             this.$refs.forms.validate((valid) => {
-                // if (valid) {
-                //     this.onLogin();
-                // } else {
-                //     this.$message.error('请填写正确的手机号及注册信息！');
-                //     return false;
-                // }
-                this.onLogin();
+                if (valid) {
+                    this.onLogin();
+                } else {
+                    this.$message.error('请填写正确的手机号及注册信息！');
+                    return false;
+                }
             });
         },
         back() {
@@ -225,11 +254,39 @@ export default {
                 path: '/Login',
             });
         },
+        getMsg() {
+            this.onCode();
+        },
+        reset() {
+            this.$refs.form.resetFields();
+        },
         async onLogin() {
             const { data } = await register(this.form);
             console.log(data.msg);
+            if (data.msg == '身份证号校验错误,') {
+                this.$message('身份证号校验错误，请输入正确！');
+            }
+            if (data.msg == '注册用户成功') {
+                this.$message(
+                    '您好，您的注册申请已经进入注册审核状态，我们将在审核后第一时间通知您。请您留意短信消息。',
+                );
+            }
         },
-        async onCode() {},
+        async onCode() {
+            if (this.form.mobile == '') {
+                this.$message('手机号格式不正确，请输入正确！');
+            } else {
+                let formdata = {
+                    sendType: '3',
+                    mobile: this.form.mobile,
+                };
+                const { data } = await VerificationCode(formdata);
+                this.form.hash = data.hash;
+                this.form.tamp = data.tamp;
+                this.form.msgNum = data.validateNum;
+                this.$message(this.form.msgNum);
+            }
+        },
     },
 };
 </script>
