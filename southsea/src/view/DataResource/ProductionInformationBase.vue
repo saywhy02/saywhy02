@@ -109,7 +109,7 @@
                 <el-card shadow="always" :body-style="{ padding: '20px' }">
                     <!-- card body -->
                     <div>
-                        <el-table :data="tableData" style="width: 116">
+                        <el-table :data="tableData">
                             <el-table-column prop="landCode" label="图斑ID">
                             </el-table-column>
                             <el-table-column prop="landName" label="地塘块命名">
@@ -598,12 +598,12 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val;
-            console.log(`每页 ${val} 条`);
+            // console.log(`每页 ${val} 条`);
             this.tableD(this.pageNum, val);
         },
         handleCurrentChange(val) {
             this.pageNum = val;
-            console.log(`当前页: ${val}`);
+            // console.log(`当前页: ${val}`);
             this.tableD(val, this.pageSize);
         },
         async tableD(aa = 1, bb = 10) {

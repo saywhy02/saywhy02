@@ -613,9 +613,9 @@
                                 :rules="rules"
                                 ref="ruleForm"
                             >
-                                <!-- 合作社（工商名称） -->
+                                <!-- 企业 -->
                                 <el-form-item
-                                    label="合作社（工商名称）"
+                                    label="企业（工商名称）"
                                     label-width="150px"
                                     prop="name"
                                 >

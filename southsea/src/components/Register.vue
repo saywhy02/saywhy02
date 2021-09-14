@@ -62,7 +62,7 @@
                             <el-input v-model="form.msgNum"></el-input>
                             <el-button
                                 :disabled="isDisabled"
-                                class="yanz"
+                                class="yanZ"
                                 type="primary"
                                 @click="getMsg"
                                 >获取验证码</el-button
@@ -276,11 +276,11 @@ export default {
             if (this.form.mobile == '') {
                 this.$message('手机号格式不正确，请输入正确！');
             } else {
-                let formdata = {
+                let formData = {
                     sendType: '3',
                     mobile: this.form.mobile,
                 };
-                const { data } = await VerificationCode(formdata);
+                const { data } = await VerificationCode(formData);
                 this.form.hash = data.hash;
                 this.form.tamp = data.tamp;
                 this.form.msgNum = data.validateNum;
@@ -316,7 +316,7 @@ h3 {
     padding-right: 12px !important;
     border-right: 1px solid #cecece;
 }
-.yanz {
+.yanZ {
     width: 100px;
     padding: 12px 0;
     margin-left: 10px;

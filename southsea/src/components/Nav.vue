@@ -18,46 +18,24 @@
                         router
                     >
                         <el-menu-item index="/Map">GIS控制台</el-menu-item>
-                        <el-menu-item index="/TaskPlann/MyTask/MyTaskList"
-                            >计划任务管理</el-menu-item
-                        >
-                        <el-menu-item index="/DataResource/ProductionBase"
-                            >生产主体库</el-menu-item
-                        >
-                        <el-menu-item index="/BasicInfo/DivisionManagement"
-                            >基础信息管理</el-menu-item
-                        >
+                        <el-menu-item index="/TaskPlann/MyTask/MyTaskList">计划任务管理</el-menu-item>
+                        <el-menu-item index="/DataResource/ProductionBase">生产主体库</el-menu-item>
+                        <el-menu-item index="/BasicInfo/DivisionManagement">基础信息管理</el-menu-item>
                     </el-menu>
                     <div class="user">
-                        <el-avatar icon="el-icon-user-solid"></el-avatar>
+                        <el-avatar shape="square" :src="squareUrl"></el-avatar>
                         <div class="drop-down">
                             <el-dropdown trigger="click">
                                 <span class="el-dropdown-link">
-                                    镇街信息员：18507161949<i
-                                        class="el-icon-arrow-down el-icon--right"
-                                    ></i>
+                                    {{ name1 }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item
-                                        >个人信息</el-dropdown-item
-                                    >
-                                    <el-dropdown-item
-                                        >修改头像</el-dropdown-item
-                                    >
-                                    <el-dropdown-item
-                                        >修改密码</el-dropdown-item
-                                    >
-                                    <el-dropdown-item divided
-                                        >切换到种植系统</el-dropdown-item
-                                    >
-                                    <el-dropdown-item
-                                        @click.native="quit"
-                                        divided
-                                        >退出</el-dropdown-item
-                                    >
-                                    <el-dropdown-item divided
-                                        >清除缓存</el-dropdown-item
-                                    >
+                                    <el-dropdown-item>个人信息</el-dropdown-item>
+                                    <el-dropdown-item>修改头像</el-dropdown-item>
+                                    <el-dropdown-item>修改密码</el-dropdown-item>
+                                    <el-dropdown-item divided>切换到种植系统</el-dropdown-item>
+                                    <el-dropdown-item @click.native="quit" divided>退出</el-dropdown-item>
+                                    <el-dropdown-item divided>清除缓存</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </div>
@@ -74,7 +52,12 @@
 export default {
     name: 'Map',
     data() {
-        return {};
+        return {
+            name1:
+                JSON.parse(localStorage.getItem('userInfo')).userIdentity +
+                JSON.parse(localStorage.getItem('userInfo')).loginName,
+            squareUrl: 'http://192.168.104.43/static/img/head.1c0ca91f.jpeg',
+        };
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -87,9 +70,26 @@ export default {
             console.log('submit!');
         },
         quit() {
-            this.$router.push({
-                path: '/login',
-            });
+            this.$confirm('是否退出?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            })
+                .then(() => {
+                    this.$router.push({
+                        path: '/login',
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: '退出成功!',
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消退出',
+                    });
+                });
         },
     },
 };

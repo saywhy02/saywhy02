@@ -36,7 +36,7 @@
                         ></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit(1)"
+                        <el-button type="primary" @click="submit"
                             >登录</el-button
                         >
                     </el-form-item>
@@ -45,53 +45,46 @@
             <!-- 手机号登录 -->
             <el-tab-pane label="手机号登录" name="second">
                 <el-form
-                    ref="form"
-                    :model="form"
-                    label-width="80px"
-                    :rules="rules"
+                    :model="ruleForm2"
+                    status-icon
+                    :rules="rules2"
+                    ref="ruleForm2"
+                    label-width="0"
+                    class="demo-ruleForm"
                 >
-                    <el-form
-                        :model="ruleForm2"
-                        status-icon
-                        :rules="rules2"
-                        ref="ruleForm2"
-                        label-width="0"
-                        class="demo-ruleForm"
-                    >
-                        <!-- 手机输入框 -->
-                        <el-form-item prop="tel">
-                            <el-input
-                                v-model="ruleForm2.tel"
-                                auto-complete="off"
-                                placeholder="请输入手机号"
-                                maxlength="11"
-                                show-word-limit
-                                prefix-icon="el-icon-phone"
-                            ></el-input>
-                        </el-form-item>
-                        <!-- 验证码输入框 -->
-                        <el-form-item prop="smscode" class="code">
-                            <el-input
-                                v-model="ruleForm2.smscode"
-                                placeholder="验证码"
-                                class="yanZ"
-                                prefix-icon="el-icon-goods"
-                            ></el-input>
-                            <!-- 发送验证码按钮 -->
-                            <el-button
-                                type="success"
-                                :disabled="isDisabled"
-                                @click="open"
-                                class="yanzheng"
-                                >{{ buttonText }}</el-button
-                            >
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit(2)"
-                                >手机登录</el-button
-                            >
-                        </el-form-item>
-                    </el-form>
+                    <!-- 手机输入框 -->
+                    <el-form-item prop="username">
+                        <el-input
+                            v-model="ruleForm2.username"
+                            auto-complete="off"
+                            placeholder="请输入手机号"
+                            maxlength="11"
+                            show-word-limit
+                            prefix-icon="el-icon-phone"
+                        ></el-input>
+                    </el-form-item>
+                    <!-- 验证码输入框 -->
+                    <el-form-item prop="smscode" class="code">
+                        <el-input
+                            v-model="ruleForm2.smscode"
+                            placeholder="验证码"
+                            class="yanZ"
+                            prefix-icon="el-icon-goods"
+                            :validate-event="false"
+                        ></el-input>
+                        <!-- 发送验证码按钮 -->
+                        <el-button
+                            type="success"
+                            @click="open"
+                            class="msgNum"
+                            >{{ buttonText }}</el-button
+                        >
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onSubmit"
+                            >手机登录</el-button
+                        >
+                    </el-form-item>
                 </el-form>
             </el-tab-pane>
             <!-- 忘记密码/注册页 -->
@@ -117,44 +110,49 @@
             class="forget"
             :before-close="handleClose"
         >
-            <el-form :model="form2" ref="form">
-                <el-form-item :label-width="formLabelWidth">
-                    <span class="redbox"
-                        ><span class="red">*</span>手机号码</span
-                    ><el-input
-                        v-model="form2.menu"
+            <el-form
+                :model="form2"
+                ref="form2"
+                :rules="rules3"
+                :label-width="formLabelWidth"
+            >
+                <el-form-item prop="mobile" label="手机号码">
+                    <el-input
+                        v-model="form2.mobile"
                         autocomplete="off"
                         maxlength="11"
                         show-word-limit
                     ></el-input>
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth">
-                    <span class="redbox"><span class="red">*</span>验证码</span
-                    ><el-input
-                        v-model="form2.yanzheng"
+                <el-row :gutter="20">
+                    <el-col :span="12" :offset="0">
+                        <el-form-item prop="msgNum" label="验证码">
+                            <el-input
+                                v-model="form2.msgNum"
+                                autocomplete="off"
+                                class="yinput"
+                                :validate-event="false"
+                            ></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-button @click="openDialog" class="msgNum"
+                            >获取验证码
+                        </el-button>
+                    </el-col>
+                </el-row>
+                <el-form-item prop="password" label="密码">
+                    <el-input
+                        type="password"
+                        v-model="form2.password"
                         autocomplete="off"
-                        class="yinput"
                     ></el-input>
-                    <el-button
-                        :disabled="isDisabled"
-                        @click="open"
-                        class="yanzheng"
-                        >获取验证码</el-button
-                    >
                 </el-form-item>
-                <el-form-item :label-width="formLabelWidth">
-                    <span class="redbox"><span class="red">*</span>密码</span
-                    ><el-input
-                        v-model="form2.pass"
+                <el-form-item prop="passTwo" label="确认密码">
+                    <el-input
+                        v-model="form2.passTwo"
                         autocomplete="off"
-                    ></el-input>
-                </el-form-item>
-                <el-form-item :label-width="formLabelWidth">
-                    <span class="redbox"
-                        ><span class="red">*</span>确认密码</span
-                    ><el-input
-                        v-model="form2.passtwo"
-                        autocomplete="off"
+                        type="password"
                     ></el-input>
                 </el-form-item>
             </el-form>
@@ -167,6 +165,7 @@
 </template>
 
 <script>
+import { login, VerificationCode, resetPasswd } from '@/api/reg';
 export default {
     name: 'Login',
     data() {
@@ -180,101 +179,209 @@ export default {
                 callback();
             }
         };
-        //检验验证码是否为空
+        //检验手机登录验证码
         let checkSmscode = (rule, value, callback) => {
-            if (value === '') {
+            if (!this.flag) {
+                callback(new Error('请先获取验证码'));
+            } else if (value === '') {
                 callback(new Error('请输入验证码'));
-            } else {
+            } else if (value == this.yanNum) {
                 callback();
+            } else {
+                callback(new Error('请输入正确的验证码'));
+            }
+        };
+        //检验模态框验证码
+        let checkDCode = (rule, value, cb) => {
+            if (!this.flagDialog) {
+                cb(new Error('请先获取验证码'));
+            } else if (value === '') {
+                console.log(2);
+                cb(new Error('请输入验证码'));
+            } else if (value == this.yanNumDialog) {
+                console.log(3);
+                cb();
+            } else {
+                console.log(4);
+                cb(new Error('请输入正确的验证码'));
+            }
+        };
+        //模态框密码确认
+        let checkPass = (rule, value, cb) => {
+            if (value == '') {
+                cb(new Error('请确认密码'));
+            } else if (value == this.form2.password) {
+                cb();
+            } else {
+                cb(new Error('两次密码不相同'));
             }
         };
         return {
+            // 二维码
             url: '../../static/img/code.png',
-            dialogFormVisible: false,
+            // 对话框
             form2: {
-                id: '',
-                menu: '',
-                yanzheng: '',
-                pass: '',
-                passtwo: '',
+                mobile: '',
+                msgNum: '',
+                password: '',
+                passTwo: '',
+                hash: '',
+                tamp: '',
+                type: 1,
             },
             forget: false,
             formLabelWidth: '120px',
             ruleForm2: {
-                tel: '',
+                username: '',
                 smscode: '',
+                grant_type: 'sms_code',
+                scope: 'all',
+                hash: '',
+                tamp: '',
             },
             form: {
                 username: '',
                 password: '',
-                phone: '',
-                code: '',
+                grant_type: 'password',
+                scope: 'all',
             },
             activeName: 'first',
+            // 账号登录表单验证
             rules: {
                 username: [
                     {
                         required: true,
-                        message: '请输入用户名',
+                        message: '登陆帐号不能为空',
                         trigger: 'blur',
                     },
                 ],
                 password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    {
+                        required: true,
+                        message: '密码不能为空',
+                        trigger: 'blur',
+                    },
                 ],
             },
             rules2: {
-                tel: [{ validator: checkTel, trigger: 'change' }],
-                smscode: [{ validator: checkSmscode, trigger: 'change' }],
+                username: [{ validator: checkTel, trigger: 'blur' }],
+                smscode: [{ validator: checkSmscode, trigger: 'blur' }],
+            },
+            rules3: {
+                mobile: [
+                    { required: true, validator: checkTel, trigger: 'blur' },
+                ],
+                msgNum: [
+                    { required: true, validator: checkDCode, trigger: 'blur' },
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                ],
+                passTwo: [
+                    { required: true, validator: checkPass, trigger: 'blur' },
+                ],
             },
             buttonText: '发送验证码',
-            isDisabled: false, // 是否禁止点击发送验证码按钮
-            flag: true,
-            yannum: 0,
-            aresure: false,
+            flag: false, //标记手机登录是否请求了验证码
+            flagDialog: false, //标记忘记密码弹窗是否请求了验证码
+            yanNum: 0, //标记手机登录验证码
+            yanNumDialog: 0, //标记忘记密码弹窗验证码
         };
     },
+    created() {
+        localStorage.setItem('userInfo', null);
+    },
     methods: {
-        submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    alert('submit!');
-                } else {
-                    console.log('error submit!!');
-                    return false;
+        // 账号密码登录
+        submit() {
+            this.$refs.form.validate((e) => {
+                if (!e) return;
+                else {
+                    this.login();
                 }
             });
         },
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
+        async login() {
+            try {
+                const { data } = await login(this.form);
+                console.log(data);
+                localStorage.setItem('userInfo', JSON.stringify(data));
+                this.$router.push({
+                    path: '/',
+                });
+                this.$message({
+                    message: '登录成功',
+                    type: 'success',
+                });
+            } catch (error) {
+                this.$message.error('登录异常');
+            }
         },
-        submit() {
-            this.$refs.ruleForm.validate((e) => {
+        // 手机登录
+        onSubmit() {
+            // console.log(this.$refs.ruleForm2.validate);
+            this.$refs.ruleForm2.validate((e) => {
                 if (!e) return;
+                else {
+                    this.SMS();
+                }
                 // 提交表单
-                this.$router.push({ name: 'index' });
-                console.log(this.form);
             });
         },
-        //登录
-        onSubmit(val) {
-            if (val == 1) {
+        async SMS() {
+            try {
+                const { data } = await login(this.ruleForm2);
+                console.log(data);
+                localStorage.setItem('userInfo', JSON.stringify(data));
                 this.$router.push({
-                    path: '/Map',
+                    path: '/',
                 });
-            } else {
-                console.log(222);
+                this.$message({
+                    message: '登录成功',
+                    type: 'success',
+                });
+            } catch (error) {
+                this.$message.error('登录异常');
             }
         },
         //获取六位随机验证码
-        open() {
-            var code = [];
-            for (var i = 0; i < 6; i++) {
-                code.push(Math.floor(Math.random() * 10));
+        async open() {
+            if (this.ruleForm2.username == '') {
+                this.$message.error('请输入正确的手机号码');
+            } else {
+                this.flag = true;
+                let formData = {
+                    sendType: '1',
+                    mobile: this.ruleForm2.username,
+                };
+                const { data } = await VerificationCode(formData);
+                // console.log(data);
+                if (data.code == 500) {
+                    this.$message.warning(data.msg);
+                } else {
+                    this.ruleForm2.hash = data.hash;
+                    this.ruleForm2.tamp = data.tamp;
+                    this.yanNum = data.validateNum;
+                    this.$message(this.yanNum);
+                }
             }
-            code = code.join('');
-            this.yannum = code;
-            this.$message(code);
+        },
+        async openDialog() {
+            if (this.form2.mobile == '') {
+                this.$message('手机号格式不正确，请输入正确！');
+            } else {
+                this.flagDialog = true;
+                let formData = {
+                    sendType: '2',
+                    mobile: this.form2.mobile,
+                };
+                const { data } = await VerificationCode(formData);
+                this.flagDialog = true;
+                this.form2.hash = data.hash;
+                this.form2.tamp = data.tamp;
+                this.yanNumDialog = data.validateNum;
+                this.$message(this.yanNumDialog);
+            }
         },
         // 验证手机号
         checkMobile(str) {
@@ -303,7 +410,22 @@ export default {
         },
         //确定
         sure() {
-            this.forget = false;
+            this.$refs.form2.validate((e) => {
+                if (!e) return;
+                else {
+                    this.change();
+                }
+            });
+        },
+        async change() {
+            const { data } = await resetPasswd(this.form2);
+            console.log(data);
+            if (data.code == 0) {
+                this.$message.success('修改密码成功');
+                this.forget = false;
+            } else {
+                this.$message.error(data.msg);
+            }
         },
         //注册
         sub() {
@@ -363,7 +485,7 @@ small {
     width: 67%;
     float: left;
 }
-.topbox .yanzheng {
+.topbox .msgNum {
     width: 30%;
     float: right;
 }
@@ -373,22 +495,15 @@ small {
 .red {
     color: red;
 }
-.redbox {
-    width: 90px !important;
-    display: inline-block;
-    text-align: right;
-    padding-right: 30px;
-}
 .forget .el-form-item__content {
-    margin-left: 20px !important;
+    margin-left: 120px !important;
 }
-.forget .yanzheng {
-    width: 15%;
+.forget .msgNum {
     float: none;
     margin-left: 20px;
 }
 .forget .yinput {
-    width: 50%;
+    width: 100%;
 }
 .el-image {
     width: 100px;

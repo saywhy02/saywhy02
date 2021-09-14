@@ -164,58 +164,63 @@
                     <!-- 模拟地图列表 -->
                     <el-row
                         :gutter="20"
-                        style="position:absolute;right:130px;top:50px"
+                        style="width: 100%; position:absolute;left:10px;top:100px;"
                     >
                         <el-col :span="24" :offset="0">
                             <el-card
                                 shadow="always"
-                                :body-style="{ padding: '20px' }"
+                                :body-style="{
+                                    padding: '20px',
+                                }"
                             >
                                 <div>
-                                    <el-table
-                                        :data="MapData"
-                                        style="width: 100%"
-                                    >
+                                    <el-table :data="MapData">
                                         <el-table-column
-                                            prop="name"
+                                            prop="landCode"
                                             label="图斑ID"
-                                            width="130"
                                         >
                                         </el-table-column>
                                         <el-table-column
-                                            prop="linkman"
-                                            label="镇街"
-                                            width="130"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="number"
-                                            label="村居"
-                                            width="130"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="type"
+                                            prop="landName"
                                             label="地塘块命名"
-                                            width="130"
                                         >
                                         </el-table-column>
                                         <el-table-column
-                                            prop="code"
-                                            label="土地性质"
-                                            width="130"
+                                            prop="landTownName"
+                                            label="镇街"
                                         >
                                         </el-table-column>
                                         <el-table-column
-                                            prop="name"
-                                            label="土地现状"
-                                            width="130"
+                                            prop="landVillageName"
+                                            label="村居"
                                         >
                                         </el-table-column>
                                         <el-table-column
-                                            label="操作"
-                                            width="130"
+                                            prop="mu"
+                                            label="面积(亩)"
                                         >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="landTypeName"
+                                            label="地块类型"
+                                        >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="subjectNames"
+                                            label="所属主体"
+                                        >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="landProductName"
+                                            label="农场品分类"
+                                        >
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="landOtherType"
+                                            label="品种"
+                                        >
+                                        </el-table-column>
+                                        <el-table-column label="操作">
                                             <template>
                                                 <el-button
                                                     size="mini"
@@ -229,14 +234,17 @@
                                 </div>
                                 <div
                                     class="block"
-                                    style="text-align: right; margin-top: 20px"
+                                    style="text-align:right;margin-top:20px"
                                 >
                                     <el-pagination
                                         background
-                                        :page-sizes="[5, 10, 20, 30, 40]"
-                                        :page-size="100"
+                                        @size-change="handleSizeChange"
+                                        @current-change="handleCurrentChange"
+                                        :page-sizes="[5, 10, 20, 30, 40, 200]"
+                                        :current-page="pageNum"
+                                        :page-size="pageSize"
                                         layout="total, sizes, prev, pager, next, jumper"
-                                        :total="400"
+                                        :total="total"
                                     >
                                     </el-pagination>
                                 </div>
@@ -254,6 +262,7 @@
 <script>
 import Diolog from '../../modalbox/Dialog.vue';
 import SearchDialog from '../../modalbox/SearchDialog.vue';
+import { productionInformation } from '@/api/reg';
 export default {
     name: 'Map',
     components: { Diolog, SearchDialog },
@@ -300,120 +309,10 @@ export default {
                     label: '任务查看模式',
                 },
             ],
-            MapData: [
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-                {
-                    name: '2016-05-02',
-                    linkman: '王小虎',
-                    number: '17858478577',
-                    IDCard: '',
-                    type: '个体户',
-                    code: '103030',
-                    base: '',
-                    address: '上海市普陀区金沙江路1518弄',
-                    profession: '',
-                    mainGoods: [],
-                    value: '',
-                    USCC: '',
-                    peoplenum: '',
-                    main: '',
-                },
-            ],
+            MapData: [],
+            total: 0,
+            pageNum: 1,
+            pageSize: 10,
         };
     },
     mounted() {
@@ -439,6 +338,22 @@ export default {
         // onSubmit() {
         //   console.log("submit!");
         // },
+        handleSizeChange(val) {
+            this.pageSize = val;
+            // console.log(`每页 ${val} 条`);
+            this.mapD(this.pageNum, val);
+        },
+        handleCurrentChange(val) {
+            this.pageNum = val;
+            // console.log(`当前页: ${val}`);
+            this.mapD(val, this.pageSize);
+        },
+        async mapD(aa = 1, bb = 10) {
+            const { data } = await productionInformation(aa, bb);
+            // console.log(data.data.list[7]);
+            this.MapData = data.data.list.concat();
+            this.total = data.data.total;
+        },
         search() {
             this.$refs.search.dialogTableVisible = true;
         },
@@ -494,6 +409,9 @@ export default {
             );
         },
     },
+    created() {
+        this.mapD();
+    },
 };
 </script>
 
@@ -510,7 +428,7 @@ export default {
     padding: 0;
 }
 .content-top {
-    width: 1200px;
+    width: 100%;
     overflow: hidden;
     border-bottom: 1px solid #ccc;
     display: flex;
@@ -518,6 +436,7 @@ export default {
     padding-left: 10px;
     height: 70px;
     align-items: center;
+    box-sizing: border-box;
 }
 .content-top button {
     margin: 10px 10px;
@@ -525,7 +444,7 @@ export default {
 .map-content {
     position: relative;
     height: calc(100% - 70px);
-    overflow: hidden;
+    overflow: scroll;
 }
 .map-search {
     position: absolute;
@@ -562,8 +481,5 @@ export default {
 }
 .el-aside .is-always-shadow {
     margin: 10px 0;
-}
-.el-card__body {
-    padding: 10px !important;
 }
 </style>
